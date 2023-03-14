@@ -18,7 +18,8 @@ extern "C" void function_logger(int64_t instr_ptr, int64_t num_args, ...) {
         int next_arg = va_arg(args, int);
         log_file << "," << next_arg;
     }
-
+    log_file << "\n";
+    
     va_end(args);
 }
 
