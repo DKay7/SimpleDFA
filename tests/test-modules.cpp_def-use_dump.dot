@@ -1,0 +1,73 @@
+digraph {
+ rankdir = TB;
+ node[shape=record; style=filled]
+subgraph cluster_9849816 {
+label=" FUNCTION _Z10facktoriali" subgraph cluster_9849816_args {
+label=" ARGUMENTS "node_10590560[label="i32 %0 | VALUE: 9, 8, 7, 6, 5, 4, 3, 2, 1, "];
+}
+subgraph cluster_9849816_body {
+label=" BODY "node_10948688[label="  %2 = alloca i32, align 4 | ??"];
+node_10948688 -> node_10969008[ weight=1000 dir="forward" ]
+node_11147488[label="  %14 = load i32, i32* %2, align 4 | VALUE: 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, "];
+node_11147488 -> node_10948688[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_10969744[label="  store i32 %12, i32* %2, align 4 | ??"];
+node_10969744 -> node_10948688[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_9850736[label="  store i32 1, i32* %2, align 4 | ??"];
+node_9850736 -> node_10948688[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_10969008[label="  %3 = alloca i32, align 4 | ??"];
+node_10969008 -> node_9850160[ weight=1000 dir="forward" ]
+node_10969456[label="  %11 = load i32, i32* %3, align 4 | VALUE: 2, 3, 4, 5, 6, 7, 8, 9, "];
+node_10969456 -> node_10969008[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_10969344[label="  %8 = load i32, i32* %3, align 4 | VALUE: 9, 8, 7, 6, 5, 4, 3, 2, "];
+node_10969344 -> node_10969008[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_10969120[label="  %4 = load i32, i32* %3, align 4 | VALUE: 9, 8, 7, 6, 5, 4, 3, 2, 1, "];
+node_10969120 -> node_10969008[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_9850160[label="  store i32 %0, i32* %3, align 4 | ??"];
+node_9850160 -> node_10969008[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_9850160[label="  store i32 %0, i32* %3, align 4 | ??"];
+node_9850160 -> node_10969120[ weight=1000 dir="forward" ]
+node_10969120[label="  %4 = load i32, i32* %3, align 4 | VALUE: 9, 8, 7, 6, 5, 4, 3, 2, 1, "];
+node_10969120 -> node_9850448[ weight=1000 dir="forward" ]
+node_9850448[label="  %5 = icmp sle i32 %4, 1 | VALUE: 0, 0, 0, 0, 0, 0, 0, 0, 1, "];
+node_9850448 -> node_10969120[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_9850448[label="  %5 = icmp sle i32 %4, 1 | VALUE: 0, 0, 0, 0, 0, 0, 0, 0, 1, "];
+node_9850448 -> node_10528544[ weight=1000 dir="forward" ]
+node_10528544[label="  br i1 %5, label %6, label %7 | ??"];
+node_10528544 -> node_9850448[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_10528544[label="  br i1 %5, label %6, label %7 | ??"];
+node_9850736[label="  store i32 1, i32* %2, align 4 | ??"];
+node_9850736 -> node_10969232[ weight=1000 dir="forward" ]
+node_10969232[label="  br label %13 | ??"];
+node_10969344[label="  %8 = load i32, i32* %3, align 4 | VALUE: 9, 8, 7, 6, 5, 4, 3, 2, "];
+node_10969344 -> node_9851024[ weight=1000 dir="forward" ]
+node_9851024[label="  %9 = sub nsw i32 %8, 1 | VALUE: 8, 7, 6, 5, 4, 3, 2, 1, "];
+node_9851024 -> node_10969344[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_9851024[label="  %9 = sub nsw i32 %8, 1 | VALUE: 8, 7, 6, 5, 4, 3, 2, 1, "];
+node_9851024 -> node_10798496[ weight=1000 dir="forward" ]
+node_10798496[label="  %10 = call i32 @_Z10facktoriali(i32 %9) | VALUE: 1, 2, 6, 24, 120, 720, 5040, 40320, "];
+node_10798496 -> node_9851024[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_10798496[label="  %10 = call i32 @_Z10facktoriali(i32 %9) | VALUE: 1, 2, 6, 24, 120, 720, 5040, 40320, "];
+node_10798496 -> node_10969456[ weight=1000 dir="forward" ]
+node_10969600[label="  %12 = mul nsw i32 %10, %11 | VALUE: 2, 6, 24, 120, 720, 5040, 40320, 362880, "];
+node_10969600 -> node_10798496[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_10969456[label="  %11 = load i32, i32* %3, align 4 | VALUE: 2, 3, 4, 5, 6, 7, 8, 9, "];
+node_10969456 -> node_10969600[ weight=1000 dir="forward" ]
+node_10969600[label="  %12 = mul nsw i32 %10, %11 | VALUE: 2, 6, 24, 120, 720, 5040, 40320, 362880, "];
+node_10969600 -> node_10969456[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_10969600[label="  %12 = mul nsw i32 %10, %11 | VALUE: 2, 6, 24, 120, 720, 5040, 40320, 362880, "];
+node_10969600 -> node_10969744[ weight=1000 dir="forward" ]
+node_10969744[label="  store i32 %12, i32* %2, align 4 | ??"];
+node_10969744 -> node_10969600[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_10969744[label="  store i32 %12, i32* %2, align 4 | ??"];
+node_10969744 -> node_11145712[ weight=1000 dir="forward" ]
+node_11145712[label="  br label %13 | ??"];
+node_11147488[label="  %14 = load i32, i32* %2, align 4 | VALUE: 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, "];
+node_11147488 -> node_11147600[ weight=1000 dir="forward" ]
+node_11147600[label="  ret i32 %14 | ??"];
+node_11147600 -> node_11147488[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+node_11147600[label="  ret i32 %14 | ??"];
+}
+}
+node_9850160 -> node_10590560[ label="user" fontcolor=maroon color=maroon dir="forward" ]
+
+}
