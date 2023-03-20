@@ -1,11 +1,16 @@
 #include "test-modules.h"
-#include <stdio.h>
+#include <iostream>
+#include <vector>
 
-int main() {
+int main(void) {
     int x = 0;
-    scanf("%d", &x);
-    // test(x, 2 + 7*x);
-    printf("Facktorial of %d is %d\n", x, facktorial(x));
-
+    std::cin >> x;
+    
+    std::cout << x << " factorial:\n";
+    std::cout << x << "! = " << faсtorial(x) << "\n";
+    
+    std::cout << "First " << x << " fibonnachi numbers:\n";
+    print_fibonacchi(x);
+    
     return 0;
 }

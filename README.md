@@ -22,7 +22,7 @@ To build this project, you need installed next requirements: `llvm-13 headers`, 
 
 Follow next steps from project's root:
 1. `mkdir build && cd build`
-2. `cmake -DLLVM_DIR="/usr/lib/llvm-13/lib/cmake/llvm/" -DCMAKE_C_COMPILER=clang-13 -DCMAKE_CXX_COMPILER=clang++-13`. But replace `-DLLVM_DIR` value with path to your llvm's directory.
+2. `cmake -DLLVM_DIR="/usr/lib/llvm-13/lib/cmake/llvm" -DCMAKE_C_COMPILER=clang-13 -DCMAKE_CXX_COMPILER=clang++-13`. But replace `-DLLVM_DIR` value with path to your llvm's directory.
 3. `make`
 
 ## How to run

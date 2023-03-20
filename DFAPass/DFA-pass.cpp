@@ -11,6 +11,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "../DotPatcher/patcher.h"
 
 //--------------------------------------------------------------------------------
 
@@ -31,7 +32,7 @@ class DFAPass: public PassInfoMixin<DFAPass> {
 
 //--------------------------------------------------------------------------------
 
-            FunctionType *open_close_log_func_t = 
+            FunctionType *open_log_func_t = 
                 FunctionType::get(llvm_void_t, {llvm_void_t}, false);
 
             FunctionType *instr_logger = 
@@ -40,10 +41,7 @@ class DFAPass: public PassInfoMixin<DFAPass> {
 //--------------------------------------------------------------------------------
 
             FunctionCallee open_log_func = 
-                module.getOrInsertFunction("open_log", open_close_log_func_t);
-            
-            FunctionCallee close_log_func = 
-                module.getOrInsertFunction("close_log", open_close_log_func_t);
+                module.getOrInsertFunction("open_log", open_log_func_t);
             
             FunctionCallee logger_func = 
                 module.getOrInsertFunction("instruction_logger", instr_logger);
@@ -58,21 +56,15 @@ class DFAPass: public PassInfoMixin<DFAPass> {
 
                 if (function.isDeclaration())
                     continue;
+                
+                // TODO cringe but idk how to not instrument global var init function..
+                if (function.getName() == "__cxx_global_var_init")
+                    continue;
 
                 if (function.getName() == "main") {
                     // insert open log function
                     builder.SetInsertPoint(&*function.getEntryBlock().getFirstInsertionPt());
                     builder.CreateCall(open_log_func);
-
-                    // insert close log function
-                    for (auto& basic_block : function) {
-                        for (auto& instr : basic_block) {
-                            if (dyn_cast<ReturnInst>(&instr)) {
-                                builder.SetInsertPoint(&instr);
-                                builder.CreateCall(close_log_func);
-                            }
-                        }
-                    }
                 }
 
                 for (auto& arg : function.args()) {
@@ -88,11 +80,13 @@ class DFAPass: public PassInfoMixin<DFAPass> {
                 for (auto& basic_block : function) {
                     for (auto& instr : basic_block) {
                         if (instr.getType()->isIntegerTy()) {
-                            Value* instr_ptr = 
-                                ConstantInt::get(llvm_int64_t, reinterpret_cast<uint64_t>(&instr));
-
                             builder.SetInsertPoint(instr.getNextNode());
-                            builder.CreateCall(logger_func, {instr_ptr, &instr});
+                
+                            Value* instr_ptr = 
+                                ConstantInt::get(llvm_int64_t, reinterpret_cast<uint64_t>(&instr));                                        
+                            Value* casted_instr_value = builder.CreateIntCast(&instr, llvm_int64_t, true);
+
+                            builder.CreateCall(logger_func, {instr_ptr, casted_instr_value});
                         }
                     }
                 }
@@ -139,23 +133,32 @@ class DFAPass: public PassInfoMixin<DFAPass> {
                 for (auto& basic_block : func) {
                     for (auto& instr : basic_block) {
                         dump_value(dot_file, instr);
-                        if (auto next_instr = instr.getNextNode())
-                            dump_connection(dot_file, &instr, next_instr, "weight=1000");
-
                         for (auto user : instr.users()) {
-                                dump_value(dot_file, *user);
-                                dump_connection(dot_file, user, &instr, "label=\"user\" fontcolor=maroon color=maroon");
+                            dump_value(dot_file, *user);
+                        }
+                    }
+
+                    for (auto& instr : basic_block) {
+                        if (auto next_instr = instr.getNextNode()) {
+                            dump_connection(dot_file, &instr, next_instr, "weight=10000");
+                        }
+                    }
+                  
+                    for (auto& instr : basic_block) {
+                        for (auto user : instr.users()) {
+                            dump_connection(dot_file, user, &instr, "label=<user> weight=0 fontcolor=maroon color=maroon");
                         }
                     }
                 }
+                
                 
                 dot_file << "}\n";
                 dot_file << "}\n";
 
                 for (auto& arg : func.args()) {
-                   for (auto user : arg.users()) {
-                       dump_connection(dot_file, user, &arg, "label=\"user\" fontcolor=maroon color=maroon");
-                   } 
+                    for (auto user : arg.users()) {
+                        dump_connection(dot_file, user, &arg, "label=<user> weight=0 fontcolor=maroon color=maroon");
+                    } 
                 }
             }
                 
@@ -165,9 +168,9 @@ class DFAPass: public PassInfoMixin<DFAPass> {
   
         void dump_value(raw_fd_ostream& dot_file, Value& val) {
                 dot_file << "node_" << reinterpret_cast<int64_t>(&val) << "[" 
-                    << "label=\"";
+                    << "label=<";
                 val.print(dot_file);
-                dot_file << " | VALUE=~~" << reinterpret_cast<int64_t>(&val) << "\"];\n";
+                dot_file << " | VALUE=~~" << reinterpret_cast<int64_t>(&val) << ">];\n";
         }
 
         void dump_connection(raw_fd_ostream& dot_file, const void* from, const void* to, std::string attributes="") {

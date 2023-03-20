@@ -1,17 +1,24 @@
-#include <stdio.h>
+#include <iostream>
 
-// void test(int x, int y) {
-//     printf("%d\n%d\n", x, y);
-// }
-
-// void another_test(int* x, int *y){
-//     (*x)++;
-//     (*y)++;
-// }
-
-int facktorial(int x) {
+int faсtorial(int x) {
     if (x <= 1)
         return 1;
     else 
-        return facktorial(x - 1) * x;
+        return faсtorial(x - 1) * x;
+}
+
+void print_fibonacchi(int x) {
+    int prev_num = 1, cur_num = 1;
+
+    std::cout << cur_num;
+
+    for (int idx = 1; idx < x; ++idx) {
+        std::cout << ", " << cur_num;
+        int tmp = prev_num;
+        prev_num = cur_num;
+        cur_num += tmp;
+    }    
+
+    std::cout << "\n";
+
 }
