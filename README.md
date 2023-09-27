@@ -26,7 +26,7 @@ Follow next steps from project's root:
 3. `make`
 
 ## How to run
-Running is consists of three main steps:
+Running consists of three main steps:
 1. ### Static code instrumentation: 
     There's `logger_cc` to instrument code. You can run `./logger_cc` binary as usual clang compiler. For example, to compile given tests, you should execute (from projects build directory):
 
